@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +16,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('back.products_add');
 });
+
+Route::resource('products','ProductController');
+Route::get('/products',[ProductController::class,'index'])->name('products.list');
+Route::get('/findSubCategory',[CategoryController::class,'findSub']);
+
+Route::post('upload',[ProductController::class,'uploadImage'])->name('upload');
+
+// Auth::routes();

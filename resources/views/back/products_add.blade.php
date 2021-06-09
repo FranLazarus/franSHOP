@@ -57,7 +57,7 @@
                 </select>
             </div>
         </div>
-        <div class="block col-11">
+        <div class="block col-10">
             <label class="small-title" for="editor">商品介紹</label>
             <textarea name="description" id="editor" type="text"></textarea>
         </div>
@@ -123,7 +123,7 @@
     ClassicEditor
         .create( document.querySelector( '#editor' ), {
             // ckfinder: {
-            //     uploadUrl: "{{route('upload')}}",
+            //     uploadUrl: "",
             //     headers: {
             //         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             //     }

@@ -13,19 +13,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @yield('link')
-    <style>
-        aside{
-            background-color: #C0E3C5;
-        }
-        aside a{
-            color:#4D3126;
-        }
-        tr:hover{
-            cursor: pointer;
-        }
-    </style>
     @yield('style')
-
 </head>
 <body>
     <div class="container-fluid">
@@ -33,8 +21,8 @@
             <aside class="col-2 p-5 vh-auto menu">
                 <img src="/images/logo.png" class="rounded mx-auto d-block" alt="網站管理後台">
                 <nav class="flex-column">
-                    <a class="nav-link active" href="#">類別管理</a>
-                    <a class="nav-link" href="#">商品管理</a>
+                    <a class="nav-link active" href="/categories">類別管理</a>
+                    <a class="nav-link" href="/products">商品管理</a>
                     <a class="nav-link" href="#">庫存管理</a>
                 </nav>
             </aside>

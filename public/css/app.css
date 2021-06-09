@@ -1,0 +1,16 @@
+body{
+    height: auto;
+    min-height: 100vh;
+}
+aside{
+    background-color: #C0E3C5;
+}
+aside a{
+    color:#4D3126;
+}
+tr:hover{
+    cursor: pointer;
+}
+main{
+    background-color: thistle;
+}

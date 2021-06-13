@@ -1,19 +1,12 @@
 @extends('back.layouts.app')
 
-@section('style')
-<style>
-  .thumbnail>img{
-    width: 100%;
-  }
-  thead{
-    background-color: #A0889E;
-  }
-</style>
+@section('link')
+  <link href="{{ asset('css/products_list.css') }}" rel="stylesheet">
 @endsection
 
 @section('title','商品管理')
 @section('content')
-<main class="col-10 p-5" id="content">
+<main class="col-10 p-5 clearfix" id="content">
     <h2>@yield('title')</h2>
     <div class="pagination-block">
       {{ $products->links('back.layouts.pagination') }}
@@ -27,9 +20,9 @@
           <th scope="col" width="10%">定價</th>
           <th scope="col" width="10%">售價</th>
           <th scope="col" width="10%">
-            <button type="button" class="btn">
+            <a type="button" class="btn" href="{{ route('products.create') }}">
               <i class="fas fa-plus-square"></i>
-            </button>
+            </a>
           </th>
           <th scope="col" width="10%">異動時間</th>
         </tr>
@@ -60,9 +53,9 @@
             <button type="button" class="btn">              
               <i class="fas fa-times-circle"></i>
             </button>
-            <button type="button" class="btn">
+            <a type="button" class="btn" href="{{ route('products.edit',$product->id) }}">
               <i class="fas fa-edit"></i>
-            </button>
+            </a>
           </td>
           <td>{{ $product->timestamp }}</td>
         </tr>

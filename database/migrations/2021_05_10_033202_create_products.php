@@ -30,15 +30,12 @@ class CreateProducts extends Migration
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->nullable();
             $table->softDeletes();                      //產生deleted_at
-            $table->timestamp('timestamp');             //原Mysql時間戳
-
+            $table->timestamp('timestamp')->nullable();             //原Mysql時間戳
         });
 
         // Schema::table('products', function (Blueprint $table) {
 
         // });
-
-
     }
 
     /**

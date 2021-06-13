@@ -14,7 +14,7 @@ class AddFatherIdToCategories extends Migration
     public function up()
     {
         Schema::table('categories', function (Blueprint $table) {
-            $table->unsignedBigInteger('father_id')->default(0);
+            $table->unsignedBigInteger('father_id')->default(0)->after('str_id');
         });
     }
 

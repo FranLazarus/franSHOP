@@ -1,3 +1,9 @@
+.operation{
+	position: absolute;
+	top: 4rem;
+	right: 4rem;
+}
+
 .cf:after {
 	visibility: hidden;
 	display: block;
@@ -23,10 +29,6 @@ html {
 h1 {
 	font-size: 1.75em;
 	margin: 0 0 0.6em 0;
-}
-
-a {
-	color: #2996cc;
 }
 
 a:hover {
@@ -294,11 +296,10 @@ p {
 	text-indent: 100%;
 	white-space: nowrap;
 	overflow: hidden;
-	border: 1px solid #aaa;
-	background: #ddd;
-	background: -webkit-linear-gradient(top, #ddd 0%, #bbb 100%);
-	background: -moz-linear-gradient(top, #ddd 0%, #bbb 100%);
-	background: linear-gradient(top, #ddd 0%, #bbb 100%);
+	background: #C4D9D6;
+	background: -webkit-linear-gradient(top, #ddd 0%, #C4D9D6 100%);
+	background: -moz-linear-gradient(top, #ddd 0%, #C4D9D6 100%);
+	background: linear-gradient(top, #ddd 0%, #C4D9D6 100%);
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
 }

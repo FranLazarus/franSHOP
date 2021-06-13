@@ -1,0 +1,15 @@
+.pagination-block{
+    float: right;
+}
+thead{
+    font-size: 18px;
+    letter-spacing: 5px;
+    color: #fff;
+    background-color: #b9a2b7;
+}
+tbody tr{
+    background-color: #eee;
+}
+.thumbnail>img{
+    width: 100%;
+}

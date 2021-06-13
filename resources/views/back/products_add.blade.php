@@ -1,10 +1,11 @@
 @extends('back.layouts.app')
 
 @section('link')
-<link href="{{ asset('css/products_form.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/products_form.css') }}" rel="stylesheet">
 @endsection
 
 @section('title','商品新增')
+
 @section('content')
 <main class="col-10 p-5" id="content">
     <h2>@yield('title')</h2>
@@ -108,8 +109,8 @@
                 //alert('xhr');
             },
             success: function(response) {
-                var sub_category = response;    //使用get方法就無須再JSON.parse
-                var html = "";
+                let sub_category = response;    //使用get方法就無須再JSON.parse
+                let html = "";
                 for(var i=0;i<sub_category.length;i++){
                     html += "<option label="+sub_category[i]['name']+" value="+sub_category[i]['id']+">"+sub_category[i]['name']+"</option>";
                 }

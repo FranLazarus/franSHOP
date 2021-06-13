@@ -54,7 +54,7 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-   public function store(Request $request)
+   public function save(Request $request)
    {
        
         //檢查使用者是否有重設用以編str_id的字符
@@ -170,9 +170,15 @@ class CategoryController extends Controller
      * 新增分類
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $itemName = $request->get('name');
+        $last = category::orderby('category_order','desc')->first();
+
+        $category = category::create(['str_id' => 'TRy5', 
+                                      'category_order' => $last['category_order']+1, 
+                                      'name' => $itemName]);
+        return $last;
     }
     
     /**

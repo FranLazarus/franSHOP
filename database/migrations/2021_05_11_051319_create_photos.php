@@ -27,7 +27,7 @@ class CreatePhotos extends Migration
             
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->nullable();
-            $table->timestamp('timestamp');
+            $table->timestamp('timestamp')->nullable();
             
         });
     }

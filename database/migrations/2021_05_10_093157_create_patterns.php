@@ -23,7 +23,7 @@ class CreatePatterns extends Migration
             
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->nullable();
-            $table->timestamp('timestamp');
+            $table->timestamp('timestamp')->nullable();
             $table->tinyInteger('status')->default('1');        //tinyint(-128,127)
 
         });

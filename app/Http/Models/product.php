@@ -18,4 +18,16 @@ class product extends Model
     protected $hidden = [
         'created_at',
     ];
+    
+    //自製屬性
+    protected $appends = ['price_diff'];
+    protected function getPriceDiffAttribute(){
+        return (($this->price) - ($this->sale_price));
+    }
+
+    //一對多
+    public function stock(){
+        return $this->hasMany(stock::class);
+    }
+    //product::find('sSeI6QexxL')->stock
 }

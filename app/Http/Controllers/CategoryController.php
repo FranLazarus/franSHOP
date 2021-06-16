@@ -78,37 +78,31 @@ class CategoryController extends Controller
         //重新整理階層的str_id與category_order
         foreach($json_data as $father){
             
-            $order = $son_order;    //接從子層回來的order值，然後繼續編下去
             $father_id = (string)$father['id']; //不能直接用，要先string化
-            
-            if($c1<$char_length && $c2<$char_length){
-                
+
+            if($c1<$char_length && $c2<$char_length){               
                 $str_f = (string)($char[$c1].$char[$c2]);   //父層分類的str_id
                 DB::update("UPDATE categories SET str_id = ?,category_order = ? WHERE id = ? AND status = ?", [$str_f,$order,$father_id,1]);
-                $order++;
                 $c2++;
-                // var_dump('father_id:'.$father_id.'    str_f: '.$str_f.'         order:'.$order.'         c1:'.$c1.'         c2:'.$c2);
-                
-            }else if($c1<$char_length && $c2>=$char_length){
-                
+                // var_dump('father_id:'.$father_id.'    str_f: '.$str_f.'         order:'.$order.'         c1:'.$c1.'         c2:'.$c2);           
+            }else if($c1<$char_length && $c2>=$char_length){              
                 $c1++;
                 $c2=0;
                 $str_f = (string)($char[$c1].$char[$c2]);
                 DB::update("UPDATE categories SET str_id = ?,category_order = ? WHERE id = ? AND status = ?", [$str_f,$order,$father_id,1]);
-                $order++;
                 $c2++;
-                // var_dump('father_id:'.$father_id.'     str_f: '.$str_f.'         order:'.$order.'         c1:'.$c1.'         c2:'.$c2);
-                
-            }else if($c1>=$char_length){
-                
+                // var_dump('father_id:'.$father_id.'     str_f: '.$str_f.'         order:'.$order.'         c1:'.$c1.'         c2:'.$c2);               
+            }else if($c1>=$char_length){             
                 //如果字符真的不夠排，就把那一個分類先停用吧~
-                DB::update("UPDATE categories SET status = ?,category_order = ? WHERE id = ?", [0,1000,$father_id]);
-                $order++;
-                
+                DB::update("UPDATE categories SET status = ?,category_order = ? WHERE id = ?", [0,100,$father_id]);
             }
             
             if(isset($father['children'])){
+                ++$order;
                 $son_order = $this->category_decode($father,$str_f,$order,$char);
+                $order = $son_order;    //接從子層回來的order值，然後繼續編下去
+            }else{
+                ++$order;
             }
             
         }
@@ -118,14 +112,14 @@ class CategoryController extends Controller
    
    
    //分類整理遞迴
-   public function category_decode($obj,$str_id,$order,$char)
+   public function category_decode($father_obj,$str_id,$order,$char)
    {
-       
-       $char_length = count($char);
-       $c3 = 0;
-       $c4 = 0;
+        $father_obj_id = (string)$father_obj['id'];
+        $char_length = count($char);
+        $c3 = 0;
+        $c4 = 0;
 
-       foreach($obj['children'] AS $son){
+       foreach($father_obj['children'] AS $son){
            
            $son_id = (string)$son['id'];
            $son_id = substr($son_id, 2, -1);   //因為nestable會給children的id的值，前面加上='，後面加上'，故手動處理掉。
@@ -133,32 +127,28 @@ class CategoryController extends Controller
                $son_id = (string)$son['id'];
            }
            
-           if($c3<$char_length && $c4<$char_length){
-               
+           if($c3<$char_length && $c4<$char_length){   
                $str_s = (string)($str_id.$char[$c3].$char[$c4]);   //子層分類的str_id
-               DB::update("UPDATE categories SET str_id = ?,category_order = ? WHERE id = ? AND status = ?", [$str_s,$order,$son_id,1]);                    
-               $order++;
+               DB::update("UPDATE categories SET str_id = ?,category_order = ?,father_id = ? WHERE id = ? AND status = ?", [$str_s,$order,$father_obj_id,$son_id,1]);
                $c4++;
-               // var_dump('son_id:  '.$son_id.'     str_s:  '.$str_s.'         order:'.$order.'         c3:'.$c3.'         c4:'.$c4);
-               
-           }else if($c3<$char_length && $c4>=$char_length){
-               
+               // var_dump('son_id:  '.$son_id.'     str_s:  '.$str_s.'         order:'.$order.'         c3:'.$c3.'         c4:'.$c4);    
+           }else if($c3<$char_length && $c4>=$char_length){              
                $c3++;
                $c4=0;
                $str_s = (string)($str_id.$char[$c3].$char[$c4]);
-               DB::update("UPDATE categories SET str_id = ?,category_order = ? WHERE id = ? AND status = ?", [$str_s,$order,$son_id,1]);
-               $order++;
+               DB::update("UPDATE categories SET str_id = ?,category_order = ?,father_id = ? WHERE id = ? AND status = ?", [$str_s,$order,$father_obj_id,$son_id,1]);
                $c4++;
-               // var_dump('son_id:  '.$son_id.'     str_s:  '.$str_s.'         order:'.$order.'         c3:'.$c3.'         c4:'.$c4);
-               
+               // var_dump('son_id:  '.$son_id.'     str_s:  '.$str_s.'         order:'.$order.'         c3:'.$c3.'         c4:'.$c4);         
            }else if($c3>=$char_length){
-               DB::update("UPDATE categories SET status = ?,category_order = ? WHERE id = ?", [0,1000,$son_id]);
-               $order++;
+               DB::update("UPDATE categories SET status = ?,category_order = ?,father_id = ? WHERE id = ?", [0,100,$son_id]);
            }
            
            if(isset($son['children'])){
-               $c1 = $this->category_decode($son,$str_s,$order,$char);
-               $order = $c1;
+                ++$order;
+                $c1 = $this->category_decode($son,$str_s,$order,$char);
+                $order = $c1;
+           }else{
+                ++$order;
            }
            
        }
@@ -170,15 +160,33 @@ class CategoryController extends Controller
      * 新增分類
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function store(Request $request)
     {
         $itemName = $request->get('name');
         $last = category::orderby('category_order','desc')->first();
 
-        $category = category::create(['str_id' => 'TRy5', 
-                                      'category_order' => $last['category_order']+1, 
-                                      'name' => $itemName]);
-        return $last;
+        //用最後一筆的str_id推測出下一筆str_id
+        if(isset($request->customChar)){
+            $char = explode(",",$request->customChar);
+        }else{
+            $char = ['A','B','C','D'];
+        }
+        $char_length = count($char);
+
+        $count = mb_strlen( $last['str_id'], "utf-8");  //count是陣列用的，字串用strlen();
+        $last_char = mb_substr($last['str_id'], -1);    //mb_substr 比 substr 更能處理繁體中文的字串判斷(雖然這邊應該不需要)
+        $current = array_search($last_char,$char);    
+
+        if($current<$char_length){
+            $new_last_char = mb_substr($last['str_id'], 0,($count-1)).$char[$current+1];
+        }else{
+            $new_last_char = mb_substr($last['str_id'], 0,($count-1)).$char[0];
+        }
+
+        $category = category::create(['str_id' => $new_last_char, 
+                          'category_order' => $last['category_order']+1, 
+                          'name' => $itemName]);
+        return true;
     }
     
     /**
@@ -187,9 +195,13 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $item = category::find($request['id']);
+        $item->update([
+            'name'=>$request['name']
+        ]);
+        return true;
     }
     
     /**
@@ -197,9 +209,11 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        category::find($request['id'])->delete();
+        //應該要先設法到categories.save，一切才會正確
+        return redirect()->to('/categories');
     }
     
     /**

@@ -56,11 +56,11 @@
 				var tempHtml = $('<ol class="dd-list">');
 				nestableData.forEach(function(value, index, array) {
 					if (value.children) {
-						var childrenHtml = $("<li class='dd-item dd3-item' data-id='"+value.id+"'><div class='dd-handle dd3-handle'></div><div class='dd3-content'><span class='span-right'>"+value.str_id+" "+value.name+"&nbsp;&nbsp;<a class='edit-button' onclick=editItem('"+value.id+"','"+value.name+"')><i class='fas fa-edit'></i></a>&nbsp;&nbsp;<a class='del-button' href={{ url('category_delete') }}/"+value.id+"><i class='fas fa-trash'></i></a></span></div></li>");
+						var childrenHtml = $("<li class='dd-item dd3-item' data-id='"+value.id+"'><div class='dd-handle dd3-handle'></div><div class='dd3-content'><span class='span-right'>"+value.str_id+" "+value.name+"&nbsp;&nbsp;<a class='edit-button' onclick=editItem('"+value.id+"','"+value.name+"')><i class='fas fa-edit'></i></a>&nbsp;&nbsp;<a class='del-button' href={{ url('categories/destroy') }}/"+value.id+"><i class='fas fa-trash'></i></a></span></div></li>");
 						childrenHtml.append(createNestable(value.children));
 						tempHtml.append(childrenHtml);
 					} else {
-						tempHtml.append("<li class='dd-item dd3-item' data-id='"+value.id+"'><div class='dd-handle dd3-handle'></div><div class='dd3-content'><span class='span-right'>"+value.str_id+" "+value.name+"&nbsp;&nbsp;<a class='edit-button' onclick=editItem('"+value.id+"','"+value.name+"')><i class='fas fa-edit'></i></a>&nbsp;&nbsp;<a class='del-button' href={{ url('category_delete') }}/"+value.id+"><i class='fas fa-trash'></i></a></span></div></li>");
+						tempHtml.append("<li class='dd-item dd3-item' data-id='"+value.id+"'><div class='dd-handle dd3-handle'></div><div class='dd3-content'><span class='span-right'>"+value.str_id+" "+value.name+"&nbsp;&nbsp;<a class='edit-button' onclick=editItem('"+value.id+"','"+value.name+"')><i class='fas fa-edit'></i></a>&nbsp;&nbsp;<a class='del-button' href={{ url('categories/destroy') }}/"+value.id+"><i class='fas fa-trash'></i></a></span></div></li>");
 					}
 				});
 				tempHtml.append('</ol>');
@@ -107,7 +107,7 @@
 	function addNewItem(){
 		let itemName = document.getElementById('itemName').value;
         $.ajax({
-            url: '/categories/create',
+            url: '/categories/store',
             type:'get',
             cache: false,
             async: false,
@@ -119,6 +119,7 @@
                 //alert('xhr');
             },
             success: function(response) {
+				//應該要先設法到categories.save，str_id、father_id、order才會及時校正
 				window.location.href = "{{URL::to('/categories')}}";
             }
         });
@@ -127,27 +128,26 @@
 	function editItem(itemId,itemName){
 		document.getElementById('itemId').value = itemId;
 		document.getElementById('itemName').value = itemName;
-
 	}
 
 	function changeItemName(){
-		var itemId = document.getElementById('itemId').value;
-		var itemName = document.getElementById('itemName').value;
+		let itemId = document.getElementById('itemId').value;
+		let itemName = document.getElementById('itemName').value;
 		$.ajax({
-			url: 'categories/5',
+			url: 'categories/update',
 			method:'get',
 			cache: false,
 			async: false,
 			dataType: 'json',
 			data: { 
-				itemId:'25',
-				itemName:'荷葉袖'
+				id:itemId,
+				name:itemName
 			},
 			error: function(xhr) {
-				alert(xhr);
+				// alert(xhr);
 			},
 			success: function(response) {
-				alert('succss');						
+				window.location.href = "{{URL::to('/categories')}}";		
 			}
 		});
 	}

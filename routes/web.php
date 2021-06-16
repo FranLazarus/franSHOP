@@ -6,10 +6,16 @@ use App\Http\Controllers\CategoryController;
 
 
 Route::resource('products','ProductController');
-Route::get('/findSubCategory',[CategoryController::class,'findSub']);
 //Route::post('upload',[ProductController::class,'uploadImage'])->name('upload');
 
-Route::resource('categories','CategoryController');
+
+Route::get('/findSubCategory',[CategoryController::class,'findSub']);
+
+Route::get('categories',[CategoryController::class,'index'])->name('categories.index');
 Route::post('categories',[CategoryController::class,'save'])->name('categories.save');
+Route::get('categories/store',[CategoryController::class,'store'])->name('categories.store');
+Route::get('categories/update',[CategoryController::class,'update'])->name('categories.update');
+Route::get('categories/destroy/{id}',[CategoryController::class,'destroy'])->name('categories.destroy');
+
 
 // Auth::routes();

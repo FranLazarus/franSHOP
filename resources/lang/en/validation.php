@@ -150,6 +150,15 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'sub_category' => '分類',
+        'product_name' => '商品名稱',
+        'description' => '商品介紹',
+        'price' => '定價',
+        'sale_price' => '售價',
+        'pattern_id' => '花色',
+        'size_id' => '尺寸',
+        'status' => '狀態'
+    ],
 
 ];

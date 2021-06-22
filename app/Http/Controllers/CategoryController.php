@@ -183,7 +183,7 @@ class CategoryController extends Controller
             $new_last_char = mb_substr($last['str_id'], 0,($count-1)).$char[0];
         }
 
-        $category = category::create(['str_id' => $new_last_char, 
+        category::create(['str_id' => $new_last_char, 
                           'category_order' => $last['category_order']+1, 
                           'name' => $itemName]);
         return true;

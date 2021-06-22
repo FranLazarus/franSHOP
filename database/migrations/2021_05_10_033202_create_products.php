@@ -15,7 +15,6 @@ class CreateProducts extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-
             $table->char('id', 10)->unique();
             $table->unsignedBigInteger('category_id')->nullable();   //從 0 到 18446744073709551615
             $table->foreign('category_id')->references('id')->on('categories');     //設為FK
@@ -30,7 +29,7 @@ class CreateProducts extends Migration
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->nullable();
             $table->softDeletes();                      //產生deleted_at
-            $table->timestamp('timestamp')->nullable();             //原Mysql時間戳
+            $table->timestamp('timestamp')->default(DB::raw('CURRENT_TIMESTAMP'));      //原Mysql時間戳
         });
 
         // Schema::table('products', function (Blueprint $table) {

@@ -33,18 +33,16 @@
           <th scope="row">{{ $product->id }}</th>
           <td>
           @php
-          $p = 1;
+            $p = 1;
           @endphp
-          @foreach ($photos as $photo)
-          @if($photo->product_id == $product->id && $p==1)
-            @php
-            $p = 0;
-            @endphp
-            <div  class="thumbnail" width="85px">
-            <img  src={{ $photo->photo_path }} alt={{ $product->name }}>
-            </div>
-          @endif
-          @endforeach
+            @foreach ($photos as $photo)
+              @if($photo->product_id == $product->id && $p==1)
+                @php $p = 0; @endphp
+                <div class="thumbnail" width="85px">
+                  <img src={{ $photo->photo_path }} alt={{ $product->name }}>
+                </div>
+              @endif
+            @endforeach
           </td>
           <td>{{ $product->name }}</td>
           <td>{{ $product->price }}</td>

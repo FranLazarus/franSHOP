@@ -24,11 +24,11 @@ class CreateStocks extends Migration
             $table->unsignedBigInteger('size_id');
             $table->foreign('size_id')->references('id')->on('sizes');     //FK
 
-            $table->smallInteger('quantity');
+            $table->smallInteger('quantity')->nullable();
             
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->nullable();
-            $table->timestamp('timestamp')->nullable();
+            $table->timestamp('timestamp')->default(DB::raw('CURRENT_TIMESTAMP'));
             
         });
     }

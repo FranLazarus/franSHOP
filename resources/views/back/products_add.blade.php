@@ -9,7 +9,16 @@
 @section('content')
 <main class="col-10 p-5" id="content">
     <h2>@yield('title')</h2>
-    <form class="content" id="add_form" action="" method="POST" enctype="multipart/form-data">
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+    <form class="content" id="add_form" action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="block">
             <div class="small-block col-5">
@@ -26,36 +35,44 @@
                 </select>
             </div>
         </div>
-        <div class="block small-block col-7">
-            <label class="small-title" for="product_name">商品名稱</label>
-            <input class="form-control" name="product_name" id="product_name" type="text">
-        </div>
-        <div class="block block-flex col-10">
-            <div class="small-block">
+        <div class="block">
+            <div class="small-block col-5">
+                <label class="small-title" for="product_name">商品名稱</label>
+                <input class="form-control" name="product_name" id="product_name" type="text">
+            </div>
+            <div class="small-block col-3">
                 <label class="small-title" for="price">定價</label>
                 <input class="form-control inline-input" name="price" id="price" type="number" min="0" onkeyup="PositiveInteger('price',0)">
                 <span class="">TWD</span>
             </div>
-            <div class="small-block">                
+            <div class="small-block col-3">                
                 <label class="small-title" for="sale_price">售價</label>
                 <input class="form-control inline-input" name="sale_price" id="sale_price" type="number" min="0" onkeyup="PositiveInteger('sale_price',0)">
                 <span class="">TWD</span>
             </div>
-            <div class="small-block">                
+        </div>
+        <div class="block">
+            <div class="small-block col-6">                
                 <label class="small-title" for="pattern">花色</label>
-                <select class="form-control inline-input" name="pattern" id="pattern" required>
+                <div class="block-flex" id="patterns">
                     @foreach ($patterns as $pattern)
-                        <option value="{{ $pattern->id }}">  {{ $pattern->name }}</option>
+                        <span>
+                            <input class="verticle" name="pattern_id[]" id="p{{ $pattern->id }}" type="checkbox" value="{{ $pattern->id }}">
+                            <label for="p{{ $pattern->id }}">{{ $pattern->name }}</label>
+                        </span>
                     @endforeach
-                </select>
+                </div>
             </div>
-            <div class="small-block">                
-                <label class="small-title" for="size">尺寸</label>
-                <select class="form-control inline-input" name="size" id="size" required>
+            <div class="small-block col-2">                
+                <label class="small-title" for="sizes">尺寸</label>
+                <div class="block-flex" id="sizes">
                     @foreach ($sizes as $size)
-                        <option value="{{ $size->id }}">  {{ $size->name }}</option>
+                        <span>
+                            <input class="verticle" name="size_id[]" id="s{{ $size->id }}" type="checkbox" value="{{ $size->id }}">
+                            <label for="s{{ $size->id }}">{{ $size->name }}</label>
+                        </span>
                     @endforeach
-                </select>
+                </div>
             </div>
         </div>
         <div class="block col-10">
@@ -64,22 +81,16 @@
         </div>
         <div class="block">
             <label class="small-title">商品圖片</label>
+
             <input type="hidden" name="have_uploaded" value=''>
-            <input name="file" id="file" style="display:none;" type="file" multiple>
+            <input name="file[]" id="file" style="display:display;" type="file" multiple>
+
+            
             <span id="file_text">未選擇任何檔案</span>               
             <label class="small_btn">
                 <label for="file" onclick="uploadFiles()">上傳</label>
             </label>
 		</div>
-        <div class="block">
-            <label class="small-title" for="status">狀態</label>
-            <span id="status">
-                <input name="status" id="onshelf" type="radio" value="1">
-                <label for="onshelf">上架中</label>
-                <input name="status" id="offshelf" type="radio" value="0">
-                <label for="offshelf">已下架</label>
-            </span>
-        </div>
         <div class="block">
             <input class="app-btn" type="submit" value="儲存">
         </div>
@@ -93,7 +104,6 @@
 <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
 <script>
 
-    findSubCategory(1);
     function findSubCategory(category){
         document.getElementById('sub_category').innerHTML = '';
         $.ajax({
@@ -118,6 +128,15 @@
             }
         });
     }
+
+    //預防離開再回此頁時，能抓到原主分類，但次分類卻對不上。
+    let category = document.getElementById('category').value;
+    // alert('132:  '+category);
+    if(category==''){
+        category = 1;
+    }
+    // alert('136:  '+category);
+    findSubCategory(category);
 
 
     var myEditor;
@@ -175,7 +194,6 @@
             }         
         }
     }
-
 
 </script>
 @endsection

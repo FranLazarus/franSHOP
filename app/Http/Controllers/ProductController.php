@@ -22,10 +22,12 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = product::orderby('timestamp','asc')->paginate(3);
+        $per_page = 3;
+        $products = product::orderby('timestamp','asc')->paginate($per_page);
         $photos = photo::all();
 
         return view('back.products_list', [
+            'per_page' => $per_page,
             'products' => $products,
             'photos' => $photos
         ]);

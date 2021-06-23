@@ -1,5 +1,4 @@
 @if($paginator->hasPages())
-
 <ul class="pagination">
 
     <!--前一頁-->
@@ -25,7 +24,6 @@
 
         @if(is_array($element))
             @foreach($element as $page=>$url)
-
                 @if($page == $paginator->currentPage())
                     <li class="page-item active">
                         <a class="page-link"><span>{{ $page }}</span></a>
@@ -35,7 +33,6 @@
                         <a class="page-link" href="{{ $url }}">{{ $page }}</a>
                     </li>
                 @endif
-
             @endforeach
         @endif
 

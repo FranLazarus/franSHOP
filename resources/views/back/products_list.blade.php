@@ -28,13 +28,14 @@
         </tr>
       </thead>
       <tbody>
+        @php $index= ($products->currentPage()-1)*$per_page+1  @endphp
         @foreach ($products as $product)
         <tr onclick = location.href="{{ route('products.edit',$product->id) }}">
-          <th scope="row">{{ $product->id }}</th>
+          <td scope="row">{{ $index++ }}</td>
           <td>
-          @php
-            $p = 1;
-          @endphp
+            @php
+              $p = 1;
+            @endphp
             @foreach ($photos as $photo)
               @if($photo->product_id == $product->id && $p==1)
                 @php $p = 0; @endphp

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DeveloperController;
 
 
 Route::resource('products','ProductController');
@@ -17,5 +18,6 @@ Route::get('categories/store',[CategoryController::class,'store'])->name('catego
 Route::get('categories/update',[CategoryController::class,'update'])->name('categories.update');
 Route::get('categories/destroy/{id}',[CategoryController::class,'destroy'])->name('categories.destroy');
 
+Route::get('developer',[DeveloperController::class,'showinfo']);
 
 // Auth::routes();

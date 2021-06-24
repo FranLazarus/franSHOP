@@ -162,7 +162,14 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        return view('back.products_add', [
+        $stock_patterns = stock::where('product_id','=',$id)->groupby('pattern_id')->select('pattern_id')->get();
+        $stock_sizes = stock::where('product_id','=',$id)->groupby('size_id')->select('size_id')->get();
+
+        return view('back.products_edit', [
+            'product' => product::find($id),
+            'stock_patterns' => $stock_patterns,
+            'stock_sizes' => $stock_sizes,
+            'photos' => photo::where('product_id','=',$id)->first(),
             'categories' => category::where('father_id',0)->get(),
             'patterns' => pattern::all(),
             'sizes' => size::all()

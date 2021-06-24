@@ -1,9 +1,16 @@
-.operation{
+.operation1{
 	position: absolute;
 	top: 4rem;
 	right: 4rem;
 }
+.operation1 .app-btn{
+	margin-right: 20px;
+}
+.operation2{
+	width: 500px;
+}
 
+/*
 .cf:after {
 	visibility: hidden;
 	display: block;
@@ -12,41 +19,24 @@
 	clear: both;
 	height: 0;
 }
-
 * html .cf {
 	zoom: 1;
 }
-
 *:first-child+html .cf {
 	zoom: 1;
 }
-
-html {
-	margin: 0;
-	padding: 0;
-}
-
-h1 {
-	font-size: 1.75em;
-	margin: 0 0 0.6em 0;
-}
-
 a:hover {
 	text-decoration: none;
-}
-
-p {
-	line-height: 1.5em;
 }
 
 .small {
 	color: #666;
 	font-size: 0.875em;
 }
-
 .large {
 	font-size: 1.25em;
 }
+*/
 
 /**
  * Nestable

@@ -4,7 +4,7 @@
     <link href="{{ asset('css/products_form.css') }}" rel="stylesheet">
 @endsection
 
-@section('title','商品新增')
+@section('title','商品修改')
 
 @section('content')
 <main class="col-10 p-5" id="content">
@@ -38,16 +38,16 @@
         <div class="block">
             <div class="small-block col-5">
                 <label class="small-title" for="product_name">商品名稱</label>
-                <input class="form-control" name="product_name" id="product_name" type="text">
+                <input class="form-control" name="product_name" id="product_name" type="text" value={{ $product->name }}>
             </div>
             <div class="small-block col-3">
                 <label class="small-title" for="price">定價</label>
-                <input class="form-control inline-input" name="price" id="price" type="number" min="0" onkeyup="PositiveInteger('price',0)">
+                <input class="form-control inline-input" name="price" id="price" type="number" min="0" onkeyup="PositiveInteger('price',0)" value={{ $product->price }}>
                 <span class="">TWD</span>
             </div>
             <div class="small-block col-3">                
                 <label class="small-title" for="sale_price">售價</label>
-                <input class="form-control inline-input" name="sale_price" id="sale_price" type="number" min="0" onkeyup="PositiveInteger('sale_price',0)">
+                <input class="form-control inline-input" name="sale_price" id="sale_price" type="number" min="0" onkeyup="PositiveInteger('sale_price',0)" value={{ $product->sale_price }}>
                 <span class="">TWD</span>
             </div>
         </div>
@@ -56,8 +56,14 @@
                 <label class="small-title" for="pattern">花色</label>
                 <div class="block-flex" id="patterns">
                     @foreach ($patterns as $pattern)
+                        @php $checked=''; @endphp
+                        @foreach ($stock_patterns as $sp)
+                            @if($pattern->id==$sp->pattern_id)
+                            @php $checked='checked'; @endphp
+                            @endif
+                        @endforeach
                         <span class="check-span">
-                            <input name="pattern_id[]" id="p{{ $pattern->id }}" type="checkbox" value="{{ $pattern->id }}">
+                            <input name="pattern_id[]" id="p{{ $pattern->id }}" type="checkbox" value="{{ $pattern->id }}" {{ $checked }}>
                             <label for="p{{ $pattern->id }}">{{ $pattern->name }}</label>
                         </span>
                     @endforeach
@@ -67,8 +73,14 @@
                 <label class="small-title" for="sizes">尺寸</label>
                 <div class="block-flex" id="sizes">
                     @foreach ($sizes as $size)
+                        @php $checked=''; @endphp
+                        @foreach ($stock_sizes as $ss)
+                            @if($size->id==$ss->size_id)
+                            @php $checked='checked'; @endphp
+                            @endif
+                        @endforeach
                         <span class="check-span">
-                            <input name="size_id[]" id="s{{ $size->id }}" type="checkbox" value="{{ $size->id }}">
+                            <input name="size_id[]" id="s{{ $size->id }}" type="checkbox" value="{{ $size->id }}" {{ $checked }}>
                             <label for="s{{ $size->id }}">{{ $size->name }}</label>
                         </span>
                     @endforeach
@@ -77,7 +89,7 @@
         </div>
         <div class="block col-10">
             <label class="small-title" for="editor">商品介紹</label>
-            <textarea name="description" id="editor" type="text"></textarea>
+            <textarea name="description" id="editor" type="text">{{ $product->description }}</textarea>
         </div>
         <div class="block">
             <label class="small-title">商品圖片</label>

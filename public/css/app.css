@@ -1,28 +1,39 @@
-nav{
-    margin-top: 50px;
-    text-align: center;
-    padding: 15px;
-    font-size: 22px;
-    letter-spacing: 2px;
-    font-weight: normal;
-    color: dodgerblue;
-}
-nav>.nav-link{
-    padding: 15px;
-}
-
 .row{
     height: auto;
     min-height: 100vh;
 }
-h2{
-    padding-bottom: 2rem;
+a:hover{
+    text-decoration: none;
+    cursor: pointer;
 }
-aside{
+
+/*nav bar*/
+.menu{
+    padding: 0px;
     background-color: #C8EBC8;
 }
-aside a{
+.menu a{
     color:#4D3126;
+}
+nav{
+    text-align: center;
+    color:#4D3126;
+}
+nav>.nav-link{
+    width: 100%;
+    padding: 20px 0px;
+    font-size: 23px;
+    letter-spacing: 3px;
+    font-weight: normal;
+}
+nav>.nav-link:hover{
+    color: #FFF;
+    background-color: #2996CC;
+}
+
+/*main area*/
+h2{
+    padding-bottom: 2rem;
 }
 tr:hover{
     cursor: pointer;
@@ -52,11 +63,13 @@ main{
 }
 .inline-input{
     display: inline-block;
-    width: 120px;
+    width: 280px;
 }
 
 
+/*buttons*/
 .app-btn{
+    padding: 5px 7px;
     color: aliceblue;
     background-color:#8b7962;
     border: none;
@@ -64,7 +77,6 @@ main{
 }
 .app-btn:hover{
     color: #fff;
-    font-weight: 550;
     background-color: #2996CC;
 }
 

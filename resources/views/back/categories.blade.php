@@ -15,19 +15,23 @@
 			<textarea id="nestable-output" name="nestable"></textarea>
 			<div>
 				<menu id="nestable-menu">	
-					<div class="operation">
+					<div class="operation1">
 						<button class="app-btn" data-action="expand-all">展開</button>
 						<button class="app-btn" data-action="collapse-all">摺疊</button>
 						{{-- <button type="button" data-action="serialize">獲取數據</button> --}}
 						<input type="submit" class="app-btn" value="儲存">
 					</div>
-					<div class="col-4">
+					<div class="operation2">
 						<div class="block-flex">
-							<span  class="small-title">分類名稱</span>
-							<input type="hidden" id="itemId" name="itemId" class="form-control">
-							<input type="text" id="itemName" name="itemName" class="form-control col-4">
-							<a class="app-btn" id="addNewItem" onclick="addNewItem()">新增</a>
-							<button class="app-btn" onclick="changeItemName()">修改</button>
+							<div>
+								<span class="small-title">分類名稱</span>
+								<input type="hidden" id="itemId" name="itemId" class="form-control">
+								<input type="text" id="itemName" name="itemName" class="form-control inline-input">
+							</div>
+							
+								<a class="app-btn" id="addNewItem" onclick="addNewItem()">新增</a>
+								<button class="app-btn" onclick="changeItemName()">修改</button>
+							
 						</div>
 					</div>
 					<div class="" style="display: none;">

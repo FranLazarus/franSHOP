@@ -18,12 +18,13 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <aside class="col-2 p-5 vh-auto menu">
-                <img src="/images/logo.png" class="rounded mx-auto d-block" alt="網站管理後台">
-                <nav class="flex-column">
+            <aside class="col-2 vh-auto menu">
+                <!--img src="/images/logo.png" class="rounded mx-auto d-block" alt="franSHOP管理後台"-->
+                <nav class="flex-column pt-5 pb-5">
+                    <h1 class="pb-5">franSHOP</h1>
                     <a class="nav-link active" href="/categories">類別管理</a>
                     <a class="nav-link" href="/products">商品管理</a>
-                    <a class="nav-link" href="#">庫存管理</a>
+                    <a class="nav-link" href="/developer">開發人員</a>
                 </nav>
             </aside>
             @yield('content')

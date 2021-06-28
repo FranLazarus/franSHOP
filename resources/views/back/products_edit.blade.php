@@ -18,20 +18,32 @@
             </ul>
         </div>
     @endif
-    <form class="content" id="add_form" action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+    <form class="content" id="add_form" action="{{ route('products.update',$product) }}" method="POST" enctype="multipart/form-data">
         @csrf
+        <input name="_method" type="hidden" value="PUT">
         <div class="block">
             <div class="small-block col-5">
                 <label class="small-title" for="category">主分類</label>
                 <select class="form-control" name="category" id="category" onchange="findSubCategory(this.value);">
                     @foreach ($categories as $category)
-                        <option label="{{ $category->name }}" value="{{ $category->id }}">{{ $category->name }}</option>
+                        @if($category->id==$category_father)
+                            <option label="{{ $category->name }}" value="{{ $category->id }}" selected>{{ $category->name }}</option>
+                        @else
+                            <option label="{{ $category->name }}" value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endif
                     @endforeach
                 </select>
             </div>
             <div class="small-block col-5">
                 <label class="small-title" for="sub_category">次分類</label>
                 <select class="form-control" name="sub_category" id="sub_category" required>
+                    @foreach ($sub_categories as $category)
+                        @if($category->id==$category_id)
+                            <option label="{{ $category->name }}" value="{{ $category->id }}" selected>{{ $category->name }}</option>
+                        @else
+                            <option label="{{ $category->name }}" value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endif
+                    @endforeach
                 </select>
             </div>
         </div>
@@ -91,7 +103,7 @@
             <label class="small-title" for="editor">商品介紹</label>
             <textarea name="description" id="editor" type="text">{{ $product->description }}</textarea>
         </div>
-        <div class="block">
+        <div class="block" style="display: none;">
             <label class="small-title">商品圖片</label>
 
             <input type="hidden" name="have_uploaded" value=''>
@@ -102,7 +114,7 @@
             </label>
 		</div>
         <div class="block col-10" style="text-align: right;">
-            <input class="app-btn" type="submit" value="儲存">
+            <input class="app-btn" type="submit" value="送出修改">
         </div>
     </form>
 </main>
@@ -140,11 +152,11 @@
     }
 
     //預防離開再回此頁時，能抓到原主分類，但次分類卻對不上。
-    let category = document.getElementById('category').value;
-    if(category==''){
-        category = 1;
-    }
-    findSubCategory(category);
+    // let category = document.getElementById('category').value;
+    // if(category==''){
+    //     category = 1;
+    // }
+    // findSubCategory(category);
 
 
     var myEditor;

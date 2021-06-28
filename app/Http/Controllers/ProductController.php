@@ -87,9 +87,9 @@ class ProductController extends Controller
         $product->id = Str::random(10);
         $product->category_id = $validatordata['sub_category'];
         $product->name = $validatordata['product_name'];
-        $product->description = $validatordata['description'];
         $product->price = $validatordata['price'];
         $product->sale_price = $validatordata['sale_price'];
+        $product->description = $validatordata['description'];
         //新增商品資料(因為id為其它資料表FK的關係，必須先insert product資料)
         $product->save();
 
@@ -121,7 +121,7 @@ class ProductController extends Controller
         $i=0;
         $f=0;
         foreach($request->file as $file){
-            //file的順序似乎與點選順序無關，不可控
+            //input[type=file]裡檔案的順序與點選順序無關，似乎不可控?
             //圖片上傳數量不可超過花色數量
             if($f <= count($patterns)){
                 $newFileName = time().'-'.$file->getClientOriginalName();        
@@ -162,15 +162,21 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
+        $product = product::find($id);
+        $category_id = $product->category_id;
+        $category_father = category::where('id','=',$category_id)->select('father_id')->first();
         $stock_patterns = stock::where('product_id','=',$id)->groupby('pattern_id')->select('pattern_id')->get();
         $stock_sizes = stock::where('product_id','=',$id)->groupby('size_id')->select('size_id')->get();
 
         return view('back.products_edit', [
-            'product' => product::find($id),
+            'product' => $product,
+            'category_father' => $category_father['father_id'],
+            'category_id' => $category_id,
             'stock_patterns' => $stock_patterns,
             'stock_sizes' => $stock_sizes,
             'photos' => photo::where('product_id','=',$id)->first(),
             'categories' => category::where('father_id',0)->get(),
+            'sub_categories' => category::where('father_id',$category_father['father_id'])->get(),
             'patterns' => pattern::all(),
             'sizes' => size::all()
         ]);
@@ -185,7 +191,68 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $messages=[
+            'required' => ':attribute 為必填欄位！',
+            'integer' => ':attribute 必須為整數！'
+        ];
+
+        $validator = Validator::make($request->all(),[
+            'sub_category' => 'required',
+            'product_name' => 'required',
+            'description' => 'required',
+            'price' => 'required|integer',
+            'sale_price' => 'required|integer',
+            'pattern_id' => 'required',
+            'size_id' => 'required'
+        ],$messages);
+
+        
+        if($validator->fails()){
+            return redirect()
+                   ->back()
+                   ->withErrors($validator)
+                   ->withInput();
+        }
+        $validatordata = $validator->validate();
+
+
+        $product = product::find($id);
+        $product->category_id = $validatordata['sub_category'];
+        $product->name = $validatordata['product_name'];
+        $product->price = $validatordata['price'];
+        $product->sale_price = $validatordata['sale_price'];
+        $product->description = $validatordata['description'];
+
+        $product->update(['category_id' => $validatordata['sub_category'],
+                          'name' => $validatordata['product_name'],
+                          'price' => $validatordata['price'],
+                          'sale_price' => $validatordata['sale_price'],
+                          'description' => $validatordata['description']
+                        ]);
+
+        //配合ID存入此商品的花色、尺寸資訊
+        //如果原本沒有再存，舊的不刪，以免影響原有商品。可是這樣又會把刪除的尺寸花色再撈出來，唉！
+        //可是為了避免面試官以為修改功能有問題，還是先給它刪光好了！
+        stock::where('product_id',$product->id)->delete();
+
+        $pattern_id = $request->pattern_id;
+        $size_id = $request->size_id;
+        $patterns = array();
+        foreach($pattern_id as $p_id){
+            foreach($size_id as $s_id){
+                $stock = new stock;
+                $stock->id = $product->id.$p_id.$s_id;
+                $stock->product_id = $product->id;
+                $stock->pattern_id = $p_id;
+                $stock->size_id = $s_id;
+                $stock->save();
+            }
+            $patterns[]=$p_id;
+        }
+
+        return redirect('/');
+
     }
 
     /**
@@ -196,7 +263,10 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //商品這邊使用軟刪除(軟刪除只適用於Model，不適用於DB唷!)
+        // product::find($id)->delete();
+        product::destroy($id);  //兩者效果好像一樣呢！改天研究。
+        return redirect('/products');
     }
 
     

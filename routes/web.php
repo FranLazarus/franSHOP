@@ -6,7 +6,9 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DeveloperController;
 
 
+Route::get('/',[ProductController::class,'index']);
 Route::resource('products','ProductController');
+Route::get('products/{product}',[ProductController::class,'destroy'])->name('products.destroy');
 //Route::post('upload',[ProductController::class,'uploadImage'])->name('upload');
 
 

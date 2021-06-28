@@ -8,6 +8,7 @@
 @section('content')
 <main class="col-10 p-5" id="content">
     <h2>@yield('title')</h2>
+	<p class="alert alert-danger col-6">可任意修改類別名稱、順序、階層，編號會自動整理。(使用遞迴與nestable)</p>
     <form id="category" action="{{ route('categories.save') }}" method="POST" enctype="multipart/form-data">
         @csrf
 		{{-- <input type="text" name='json_string' value="{{ $json_string }}"> --}}

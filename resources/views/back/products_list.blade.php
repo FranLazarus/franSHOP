@@ -8,6 +8,7 @@
 @section('content')
 <main class="col-10 p-5 clearfix" id="content">
     <h2>@yield('title')</h2>
+    <span class="alert alert-danger col-3">資料庫有備份，歡迎盡量實測！( GIT clone下來後，請勿commit去，感謝！ )</span>
     <div class="pagination-block">
       {{ $products->links('back.layouts.pagination') }}
     </div>
@@ -49,9 +50,9 @@
           <td>{{ $product->price }}</td>
           <td>{{ $product->sale_price }}</td>
           <td>
-            <button type="button" class="btn">              
+            <a type="button" class="btn" href="{{ route('products.destroy',$product->id) }}">       
               <i class="fas fa-times-circle"></i>
-            </button>
+            </a>
             <a type="button" class="btn" href="{{ route('products.edit',$product->id) }}">
               <i class="fas fa-edit"></i>
             </a>
